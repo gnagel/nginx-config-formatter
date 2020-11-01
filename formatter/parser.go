@@ -36,24 +36,41 @@ func SplitStatements(line string) []string {
 		return []string{line}
 	}
 
-	wrappedInQuotes := false
-	parts := strings.Split(line, "\"")
-	output := make([]string, 0, len(parts))
-	for _, part := range parts {
-		part = strings.TrimSpace(part)
-		if wrappedInQuotes {
-			output = append(output, part)
-		} else {
-			for _, innerPart := range strings.Split(part, ";") {
-				innerPart = strings.TrimSpace(innerPart)
-				if len(innerPart) > 0 {
-					innerPart += ";"
-					output = append(output, innerPart)
-				}
+	output := make([]string, 0)
+	buffer := make([]rune, 0, len(line))
+	withinQuote := false
+	for _, char := range line {
+		switch char {
+		case '\'': fallthrough
+		case '"':
+			withinQuote = !withinQuote
+			buffer = append(buffer, char)
+		case ';':
+			buffer = append(buffer, char)
+			if !withinQuote {
+				line := string(buffer)
+				buffer = buffer[:0]
+				output = append(output, line)
 			}
+		case '\n':
+			line := string(buffer)
+			buffer = buffer[:0]
+			output = append(output, line)
+		default:
+			buffer = append(buffer, char)
 		}
-		wrappedInQuotes = !wrappedInQuotes
 	}
+	if len(buffer) > 0 {
+		line := string(buffer)
+		buffer = buffer[:0]
+		output = append(output, line)
+	}
+
+	// Make sure each line has been cleaned up
+	for index, line := range output {
+		output[index] = strings.TrimSpace(line)
+	}
+	
 	return output
 }
 

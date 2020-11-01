@@ -1,7 +1,7 @@
 package formatter
 
-const INDENTATION = "\t"
-const TEMPLATE_VARIABLE_OPENING_TAG = "___TEMPLATE_VARIABLE_OPENING_TAG___"
-const TEMPLATE_VARIABLE_CLOSING_TAG = "___TEMPLATE_VARIABLE_CLOSING_TAG___"
-const TEMPLATE_BRACKET_OPENING_TAG = "___TEMPLATE_BRACKET_OPENING_TAG___"
-const TEMPLATE_BRACKET_CLOSING_TAG = "___TEMPLATE_BRACKET_CLOSING_TAG___"
+const indentation = "\t"
+const varStart = "__var_start__"
+const varEnd = "__var_end__"
+const blockStart = "__block__start__"
+const blockEnd = "__block__end__"

@@ -80,7 +80,7 @@ server {
 	}
 }
 `
-		actual := strings.Join(IndentLines(lines), "\n")
+		actual := strings.Join(IndentLines(lines, indentation), "\n")
 		assert.Equal(t, actual, expected)
 	})
 }

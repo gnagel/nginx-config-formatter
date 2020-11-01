@@ -52,14 +52,14 @@ http {
 
 	t.Run("Format UTF-8 body", func(t *testing.T) {
 		input := utf8Sample
-		output := FormatBody(input)
+		output := FormatBody(input, indentation)
 		expected := strings.ReplaceAll(strings.TrimSpace(utf8Sample), "    ", "\t") + "\n"
 		assert.Equal(t, expected, output)
 	})
 
 	t.Run("Format LATIN-1 body", func(t *testing.T) {
 		input := latin1Sample
-		output := FormatBody(input)
+		output := FormatBody(input, indentation)
 		expected := strings.ReplaceAll(strings.TrimSpace(latin1Sample), "    ", "\t")+ "\n"
 		assert.Equal(t, expected, output)
 	})

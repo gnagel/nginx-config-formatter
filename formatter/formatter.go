@@ -10,6 +10,7 @@ import (
 )
 
 type Fmt struct {
+	Indent string
 	ConfigFile   string
 	CreateBackup bool
 	InPlace      bool
@@ -30,7 +31,7 @@ func (self *Fmt) Run() error {
 
 	// Perform the auto-formatting
 	input := string(data)
-	output := FormatBody(input)
+	output := FormatBody(input, self.Indent)
 
 	// If we are not writing the file then just dump it to stdout
 	if !self.InPlace {
@@ -70,13 +71,13 @@ func (self *Fmt) Run() error {
 	return nil
 }
 
-func FormatBody(body string) string {
+func FormatBody(body, indent string) string {
 	body = EscapeBlocks(body)
 	lines := strings.Split(body, "\n")
 	lines = CleanLines(lines)
 	lines = MoveOpeningBracket(lines)
 	lines = ScrubBlankLines(lines)
-	lines = IndentLines(lines)
+	lines = IndentLines(lines, indent)
 	body = strings.Join(lines, "\n")
 	body = UnescapeBlocks(body)
 	return body

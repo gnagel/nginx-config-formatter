@@ -87,7 +87,7 @@ func CleanLines(lines []string) []string {
 }
 
 // Indents the lines according to their nesting level determined by curly brackets.
-func IndentLines(lines []string) []string {
+func IndentLines(lines []string, indent string) []string {
 	output := make([]string, 0, len(lines))
 	indentDepth := 0
 	for _, line := range lines {
@@ -96,7 +96,7 @@ func IndentLines(lines []string) []string {
 		}
 
 		if len(line) != 0 {
-			output = append(output, strings.Repeat(indentation, indentDepth)+line)
+			output = append(output, strings.Repeat(indent, indentDepth)+line)
 		} else {
 			output = append(output, "")
 		}

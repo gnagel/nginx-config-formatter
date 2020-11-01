@@ -2,6 +2,7 @@ package formatter
 
 import (
 	"github.com/stretchr/testify/assert"
+	"strings"
 	"testing"
 )
 
@@ -56,5 +57,30 @@ func TestCleanLine(t *testing.T) {
 		expected := []string{"server", "server_name abc.xyz;", "listen ::80;", "location /", "proxy_pass http://localhost:1234;", ";"}
 		output := CleanLine(line)
 		assert.Equal(t, expected, output)
+	})
+}
+
+func TestIndentLines(t *testing.T) {
+	t.Run("Indent lines", func(t *testing.T) {
+		lines := strings.Split(
+			`
+server {
+listen 80;
+location / {
+proxy_pass: http://localhost:123456;
+}
+}
+`,
+			"\n")
+		expected := `
+server {
+	listen 80;
+	location / {
+		proxy_pass: http://localhost:123456;
+	}
+}
+`
+		actual := strings.Join(IndentLines(lines), "\n")
+		assert.Equal(t, actual, expected)
 	})
 }

@@ -2,6 +2,8 @@
 nginx config file formatter/beautifier written in Go. 
 This is a port of the original formatter written in python here: [1connect/nginx-config-formatter](https://github.com/1connect/nginx-config-formatter)
 
+![Go](https://github.com/nginx-config-formatter/nginx-config-formatter/workflows/Go/badge.svg)
+
 This Go app script formats *nginx* configuration files in consistent way, described below:
 
 * all lines are indented in uniform manner, with 4 spaces per level

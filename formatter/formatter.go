@@ -13,12 +13,18 @@ type Fmt struct {
 	ConfigFile   string
 	CreateBackup bool
 	InPlace      bool
+	Verbose bool
 }
 
 func (self *Fmt) Run() error {
 	// Read in the file
+	if self.Verbose {
+		log.Println("Reading source file: ", self.ConfigFile)
+	}
 	data, err := ioutil.ReadFile(self.ConfigFile)
-	if nil != errors.Wrap(err, fmt.Sprintf("Failed to open file: %v", self.ConfigFile)) {
+	if nil != err {
+		err = errors.Wrap(err, fmt.Sprintf("Failed to open file: %v", self.ConfigFile))
+		log.Println("Failed to read source file: ", self.ConfigFile, err)
 		return err
 	}
 
@@ -33,6 +39,9 @@ func (self *Fmt) Run() error {
 
 	// If nothing changed, then just return
 	if input == output || !self.InPlace {
+		if self.Verbose {
+			log.Println("No changes to source file")
+		}
 		return nil
 	}
 
@@ -41,7 +50,10 @@ func (self *Fmt) Run() error {
 	// and created a backup (if needed).
 	if self.CreateBackup {
 		fileName := fmt.Sprintf("%v.%v.bak", strings.ReplaceAll(self.ConfigFile, ".conf", ""), time.Now().Unix())
-		if err := ioutil.WriteFile(fileName, []byte(input), 0644); nil != err {
+		log.Println("Creating backup file: ", fileName)
+
+		err = ioutil.WriteFile(fileName, []byte(input), 0644)
+		if nil != err {
 			err = errors.Wrap(err, fmt.Sprintf("Failed to create backup file: %v", self.ConfigFile))
 			return err
 		}
@@ -49,7 +61,8 @@ func (self *Fmt) Run() error {
 
 	// Overwrite the original
 	err = ioutil.WriteFile(self.ConfigFile, []byte(output), 0644)
-	if err := ioutil.WriteFile(self.ConfigFile, []byte(input), 0644); nil != err {
+	if nil != err {
+		log.Println("Error writing config file: ", self.ConfigFile)
 		err = errors.Wrap(err, fmt.Sprintf("Failed to write to original file: %v", self.ConfigFile))
 		return err
 	}

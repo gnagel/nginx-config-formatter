@@ -5,6 +5,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var formatterConfig * formatter.Fmt
+var Indent string
+
 // fmtCmd represents the fmt command
 var fmtCmd = &cobra.Command{
 	Use:   "fmt [--indent='\t'] [--backup] [--in-place] config_file",
@@ -20,25 +23,18 @@ Format nginx configuration files in a standardized and consistent way:
 * Whitespaces in variable designators are removed: ${ my_variable } is collapsed to ${my_variable}
 `,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt := formatter.Fmt{
-			ConfigFile:   ConfigFile,
-			CreateBackup: Backup,
-			InPlace:      InPlace,
-		}
-		err := fmt.Run()
+		err := formatterConfig.Run()
 		return err
 	},
 }
 
-var Indent string
-var Backup bool
-var InPlace bool
-var ConfigFile string
 
 func init() {
+	formatterConfig = &formatter.Fmt{}
 	rootCmd.AddCommand(fmtCmd)
 	fmtCmd.Flags().StringVarP(&Indent, "indent", "i", "\t", "Set the indent amount (spaces or tab)")
-	fmtCmd.Flags().BoolVarP(&Backup, "backup", "b", false, "Generate a backup")
-	fmtCmd.Flags().BoolVarP(&InPlace, "in-pace", "w", true, "Write the config in-place")
-	fmtCmd.Flags().StringVar(&ConfigFile, "config", "c",  "Config file to process")
+	fmtCmd.Flags().BoolVarP(&formatterConfig.CreateBackup, "backup", "b", false, "Generate a backup")
+	fmtCmd.Flags().BoolVarP(&formatterConfig.InPlace, "in-pace", "w", true, "Write the config in-place")
+	fmtCmd.Flags().BoolVarP(&formatterConfig.Verbose, "verbose", "v", false, "Print verbose messages")
+	fmtCmd.Flags().StringVar(&formatterConfig.ConfigFile, "config", "c",  "Config file to process")
 }

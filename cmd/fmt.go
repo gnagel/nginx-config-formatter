@@ -34,7 +34,7 @@ func init() {
 	rootCmd.AddCommand(fmtCmd)
 	fmtCmd.Flags().StringVarP(&Indent, "indent", "i", "\t", "Set the indent amount (spaces or tab)")
 	fmtCmd.Flags().BoolVarP(&formatterConfig.CreateBackup, "backup", "b", false, "Generate a backup")
-	fmtCmd.Flags().BoolVarP(&formatterConfig.InPlace, "in-pace", "w", true, "Write the config in-place")
+	fmtCmd.Flags().BoolVarP(&formatterConfig.InPlace, "in-place", "w", true, "Write the config in-place")
 	fmtCmd.Flags().BoolVarP(&formatterConfig.Verbose, "verbose", "v", false, "Print verbose messages")
 	fmtCmd.Flags().StringVar(&formatterConfig.ConfigFile, "config", "c",  "Config file to process")
 }

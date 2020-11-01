@@ -37,7 +37,7 @@ jobs:
 
       - name: Check Goreleaser
         uses: goreleaser/goreleaser-action@v2
-        unless: startsWith(github.ref, 'refs/tags/')
+        if: !startsWith(github.ref, 'refs/tags/')
         with:
           version: latest
           args: release --snapshot --skip-publish --rm-dist

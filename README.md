@@ -21,18 +21,19 @@ Go get to run this app:
 ## Usage
 
 ```
-usage: go tool github.com/gnagel/nginx-config-formatter [-h] [-v] [-b] config_files [config_files ...]
+Usage:
+  nginx-config-formatter [command]
 
-Script formats nginx configuration file.
+Available Commands:
+  fmt         Nginx config file formatter
+  help        Help about any command
 
-positional arguments:
-  config_files          configuration files to format
+Flags:
+      --config string   config file (default is $HOME/.nginx-config-formatter.yaml)
+  -h, --help            help for nginx-config-formatter
+  -t, --toggle          Help message for toggle
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -v, --verbose         show formatted file names
-  -b, --backup-original
-                        backup original config file
+Use "nginx-config-formatter [command] --help" for more information about a command.
 ```
 
 ## Credits

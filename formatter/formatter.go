@@ -61,6 +61,9 @@ func (self *Fmt) Run() error {
 	}
 
 	// Overwrite the original
+	if self.Verbose {
+		log.Println("Writing config file: ", self.ConfigFile)
+	}
 	err = ioutil.WriteFile(self.ConfigFile, []byte(output), 0644)
 	if nil != err {
 		log.Println("Error writing config file: ", self.ConfigFile)
@@ -68,6 +71,7 @@ func (self *Fmt) Run() error {
 		return err
 	}
 
+	log.Println("Success writing config file: ", self.ConfigFile)
 	return nil
 }
 

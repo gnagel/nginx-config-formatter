@@ -84,3 +84,55 @@ server {
 		assert.Equal(t, actual, expected)
 	})
 }
+
+func TestScrubBlankLines(t *testing.T) {
+	t.Run("No consecutive blank lines", func(t *testing.T) {
+		lines := []string{
+			"server {",
+			"listen ::80;",
+			"}",
+		}
+		output := ScrubBlankLines(lines)
+
+		expected := []string{
+			"server {",
+			"listen ::80;",
+			"}",
+			"",
+		}
+		assert.Equal(t, expected, output)
+	})
+
+	t.Run("Strip consecutive blank lines", func(t *testing.T) {
+		lines := []string{
+			"",
+			"",
+			"",
+			"",
+			"server {",
+			"",
+			"",
+			"",
+			"listen ::80;",
+			"",
+			"",
+			"",
+			"}",
+			"",
+			"",
+			"",
+			"",
+		}
+		output := ScrubBlankLines(lines)
+
+		expected := []string{
+			"server {",
+			"",
+			"listen ::80;",
+			"",
+			"}",
+			"",
+		}
+		assert.Equal(t, expected, output)
+	})
+}

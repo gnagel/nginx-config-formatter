@@ -109,3 +109,22 @@ func IndentLines(lines []string) []string {
 	return output
 }
 
+func ScrubBlankLines(lines []string) []string {
+	output := make([]string, 0, len(lines))
+	for _, line := range lines {
+		lastLine := ""
+		if len(output) > 0 {
+			lastLine = output[len(output)-1]
+		}
+
+		if len(lastLine) == 0 && len(line) == 0 {
+			continue
+		} else {
+			output = append(output, line)
+		}
+	}
+	if len(output) > 0 && len(output[len(output)-1]) > 0 {
+		output = append(output, "")
+	}
+	return output
+}
